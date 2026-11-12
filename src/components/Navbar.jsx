@@ -55,7 +55,7 @@ const CustomNavbar = () => {
     navigate('superadmin/users') // Tapa el tema del focus en los links
   }
 
-  const { handleUserLogout } =useContext(AuthenticationContext)
+  const { handleUserLogout } = useContext(AuthenticationContext)
 
   const handleLogout = () => {
     handleUserLogout()
