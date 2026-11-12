@@ -1,5 +1,3 @@
-# Trabajo Práctico Integrador - Programación 3.
-
 # Point Hardware
 
 Aplicación web de e-commerce para la gestión y compra de componentes de hardware. Permite registrarse, iniciar sesión, explorar productos, usar un carrito de compras y administrar recursos según el rol del usuario.
