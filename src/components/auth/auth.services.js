@@ -1,4 +1,5 @@
 import { BASE_URL } from "../services/config"
+import { getApiError, normalizeRequestError } from '../services/apiError'
 
 
 export const validateString = (str, minLength, maxLength) => {
@@ -45,13 +46,12 @@ export const registerUser = (newUser, onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo registrar el Usuario')
+            throw await getApiError(res, 'No se pudo registrar el usuario.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const loginUser = (email, password, onSuccess, onError) => {
@@ -64,12 +64,11 @@ export const loginUser = (email, password, onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'Error al iniciar Sesion')
+            throw await getApiError(res, 'No se pudo iniciar sesión.')
         }
         return res.json()
     })
     
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }

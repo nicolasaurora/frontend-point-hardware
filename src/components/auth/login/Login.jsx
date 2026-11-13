@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../services/auth.context";
 import { errorToast, successToast } from "../../notifications/Notifications";
-import { validateEmail, validatePassword, loginUser } from "../auth.services";
+import { validateEmail, loginUser } from "../auth.services";
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import logo from '../../../assets/images/ph-completo-fondo-blanco.png'
 
@@ -44,15 +44,22 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (!email.length || !validateEmail(email)) {
-            errorToast('email invalido')
+        if (!email.trim()) {
+            errorToast('Ingresá tu email.')
             setErrors({...errors, email: true})
             emailRef.current.focus()
             return
         }
 
-        else if (!password.length || !validatePassword(password, 7, null, true, true)) {
-            errorToast('Contraseña Invalida')
+        if (!validateEmail(email)) {
+            errorToast('Ingresá una dirección de email válida.')
+            setErrors({...errors, email: true})
+            emailRef.current.focus()
+            return
+        }
+
+        if (!password.length) {
+            errorToast('Ingresá tu contraseña.')
             setErrors({...errors, password: true})
             passwordRef.current.focus()
             return

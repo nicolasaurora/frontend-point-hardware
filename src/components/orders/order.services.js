@@ -1,13 +1,5 @@
 import { BASE_URL, TOKEN_KEY } from '../services/config'
-
-const getErrorMessage = async (response, fallbackMessage) => {
-  try {
-    const errorData = await response.json()
-    return errorData.message || fallbackMessage
-  } catch {
-    return fallbackMessage
-  }
-}
+import { getApiError, normalizeRequestError } from '../services/apiError'
 
 export const createOrder = (cartItems, onSuccess, onError) => {
   const items = cartItems.map(item => ({
@@ -25,13 +17,13 @@ export const createOrder = (cartItems, onSuccess, onError) => {
   })
     .then(async response => {
       if (!response.ok) {
-        throw new Error(await getErrorMessage(response, 'No se pudo confirmar la compra.'))
+        throw await getApiError(response, 'No se pudo confirmar la compra.')
       }
 
       return response.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const getOrder = (orderId, onSuccess, onError) => {
@@ -42,13 +34,13 @@ export const getOrder = (orderId, onSuccess, onError) => {
   })
     .then(async response => {
       if (!response.ok) {
-        throw new Error(await getErrorMessage(response, 'No se pudo cargar la orden.'))
+        throw await getApiError(response, 'No se pudo cargar la orden.')
       }
 
       return response.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const getMyOrders = (onSuccess, onError) => {
@@ -59,13 +51,13 @@ export const getMyOrders = (onSuccess, onError) => {
   })
     .then(async response => {
       if (!response.ok) {
-        throw new Error(await getErrorMessage(response, 'No se pudo cargar el historial de compras.'))
+        throw await getApiError(response, 'No se pudo cargar el historial de compras.')
       }
 
       return response.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const getAllOrders = (onSuccess, onError) => {
@@ -76,11 +68,11 @@ export const getAllOrders = (onSuccess, onError) => {
   })
     .then(async response => {
       if (!response.ok) {
-        throw new Error(await getErrorMessage(response, 'No se pudieron cargar las órdenes.'))
+        throw await getApiError(response, 'No se pudieron cargar las órdenes.')
       }
 
       return response.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }

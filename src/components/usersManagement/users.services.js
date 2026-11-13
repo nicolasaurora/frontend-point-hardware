@@ -1,4 +1,5 @@
 import { TOKEN_KEY, BASE_URL } from '../services/config'
+import { getApiError, normalizeRequestError } from '../services/apiError'
 
 export const getUsers = (onSuccess, onError) => {
     fetch(`${BASE_URL}/users` , {
@@ -8,13 +9,12 @@ export const getUsers = (onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo cargar los Usuarios')
+            throw await getApiError(res, 'No se pudieron cargar los usuarios.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const updateUser = (changedUser, onSuccess, onError) => {
@@ -28,13 +28,12 @@ export const updateUser = (changedUser, onSuccess, onError) => {
     })
     .then(async res => {
         if(!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo editar el Usuario')
+            throw await getApiError(res, 'No se pudo editar el usuario.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const deleteUser = (userId, onSuccess, onError) => {
@@ -46,13 +45,12 @@ export const deleteUser = (userId, onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo eliminar el Usuario')
+            throw await getApiError(res, 'No se pudo eliminar el usuario.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const updateUserRole = (changedUser, onSuccess, onError) => {
@@ -66,12 +64,11 @@ export const updateUserRole = (changedUser, onSuccess, onError) => {
     })
     .then(async res => {
         if(!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo editar el Usuario')
+            throw await getApiError(res, 'No se pudo actualizar el rol del usuario.')
         }
         
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }

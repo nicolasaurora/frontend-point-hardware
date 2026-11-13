@@ -1,5 +1,6 @@
 import { errorToast } from "../../notifications/Notifications"
 import { TOKEN_KEY, BASE_URL } from "../../services/config"
+import { getApiError, normalizeRequestError } from '../../services/apiError'
 
 export const getProducts = (onSuccess, onError) => {
     fetch(`${BASE_URL}/products` , {
@@ -8,13 +9,12 @@ export const getProducts = (onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo cargar los productos')
+            throw await getApiError(res, 'No se pudieron cargar los productos.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const addProduct = (newProduct, onSuccess, onError) => {
@@ -28,13 +28,12 @@ export const addProduct = (newProduct, onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo agregar el Producto')
+            throw await getApiError(res, 'No se pudo agregar el producto.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const deleteProduct = (productId, onSuccess, onError) => {
@@ -46,13 +45,12 @@ export const deleteProduct = (productId, onSuccess, onError) => {
     })
     .then(async res => {
         if (!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo eliminar el Producto')
+            throw await getApiError(res, 'No se pudo eliminar el producto.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 export const updateProduct = (changedProduct, onSuccess, onError) => {
@@ -66,13 +64,12 @@ export const updateProduct = (changedProduct, onSuccess, onError) => {
     })
     .then(async res => {
         if(!res.ok) {
-            const errData = await res.json()
-            throw new Error(errData.message || 'No se pudo editar el Producto')
+            throw await getApiError(res, 'No se pudo editar el producto.')
         }
         return res.json()
     })
     .then(onSuccess)
-    .catch(onError)
+    .catch(error => onError(normalizeRequestError(error)))
 }
 
 

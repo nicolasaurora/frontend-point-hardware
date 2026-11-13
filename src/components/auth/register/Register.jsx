@@ -22,7 +22,7 @@ const Register = () => {
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
 
-    const [errors, setErrors] = useState({email: false, password: false, checkPassword, firstName: false, lastName: false})
+    const [errors, setErrors] = useState({email: false, password: false, checkPassword: false, firstName: false, lastName: false})
 
     const [showPassword, setShowPassword] = useState(null)
 
@@ -40,7 +40,7 @@ const Register = () => {
     }
     const handleFirstName = (e) => {
         setFirstName(e.target.value)
-        setErrors({...errors, name: false})
+        setErrors({...errors, firstName: false})
     }
     const handleLastName = (e) => {
         setLastName(e.target.value)
@@ -64,42 +64,63 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (!email.length || !validateEmail(email)) {
-            errorToast('email invalido')
+        if (!email.trim()) {
+            errorToast('Ingresá tu email.')
             setErrors({...errors, email: true})
             emailRef.current.focus()
             return
         }
 
-        else if (!password.length || !validatePassword(password, 7, null, true, true)) {
-            errorToast('Contraseña Invalida')
+        if (!validateEmail(email)) {
+            errorToast('Ingresá una dirección de email válida.')
+            setErrors({...errors, email: true})
+            emailRef.current.focus()
+            return
+        }
+
+        if (!password.length) {
+            errorToast('Ingresá una contraseña.')
             setErrors({...errors, password: true})
             passwordRef.current.focus()
+            return
+        }
+
+        if (!validatePassword(password, 7, null, true, true)) {
+            errorToast('La contraseña debe tener al menos 7 caracteres, una mayúscula y un número.')
+            setErrors({...errors, password: true})
+            passwordRef.current.focus()
+            return
+        }
+
+        else if (!checkPassword.length) {
+            errorToast('Repetí la contraseña.')
+            setErrors({...errors, checkPassword:true})
+            checkPasswordRef.current.focus()
             return
         }
 
         else if (password !== checkPassword) {
             errorToast('Las contraseñas no coinciden')
             setErrors({...errors, checkPassword:true})
-            checkPassword.current.focus()
+            checkPasswordRef.current.focus()
             return
         }
 
         else if (!firstName.length || !validateString(firstName, 1, 50)) {
-            errorToast('Nombre inválido')
-            setErrors({...errors, name: true})
+            errorToast('Ingresá un nombre de hasta 50 caracteres.')
+            setErrors({...errors, firstName: true})
             firstNameRef.current.focus()
             return
         }
 
         else if (!lastName.length || !validateString(lastName, 1, 50)) {
-            errorToast('Apellido inválido')
+            errorToast('Ingresá un apellido de hasta 50 caracteres.')
             setErrors({...errors, lastName: true})
             lastNameRef.current.focus()
             return
         }
 
-        setErrors({email: false, checkPassword, password: false, firstName: false, lastName: false})
+        setErrors({email: false, checkPassword: false, password: false, firstName: false, lastName: false})
 
 
         // Envio a Backend
@@ -194,11 +215,11 @@ const Register = () => {
                             type="text"
                             placeholder="Ingresar nombre"
                             value={firstName}
-                            className={errors.name && 'border border-danger'} 
+                            className={errors.firstName && 'border border-danger'} 
                             onChange={handleFirstName}
                             ref={firstNameRef}
                         />
-                        {!errors.name
+                        {!errors.firstName
                         ?''
                         :<div>Por favor, completa el campo 'Nombre'</div>}
                     </FormGroup>
