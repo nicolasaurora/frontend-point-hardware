@@ -5,6 +5,7 @@ import { errorToast } from '../notifications/Notifications'
 import { AuthenticationContext } from '../services/auth.context'
 import {
   getDashboardSummary,
+  getDashboardInsights,
   getLowStockProducts,
   getSalesOverTime,
   getTopProducts,
@@ -35,6 +36,47 @@ const SummaryCard = ({ label, value, isCurrency = false }) => (
 const EmptyChart = ({ children }) => (
   <div className="dashboard-empty-state">{children}</div>
 )
+
+const insightTypeLabels = {
+  success: 'Positivo',
+  warning: 'Atención',
+  info: 'Información',
+}
+
+const BusinessInsights = ({ data }) => {
+  const insights = Array.isArray(data.insights) ? data.insights : []
+
+  return (
+    <section className="dashboard-insights-section" aria-labelledby="dashboard-insights-title">
+      <div className="dashboard-insights-heading">
+        <div>
+          <h2 className="dashboard-section-title mb-1" id="dashboard-insights-title">Insights del negocio</h2>
+          <p className="text-muted mb-0">Período analizado: {data.period || 'Sin información'}</p>
+        </div>
+      </div>
+
+      {insights.length ? (
+        <Row className="g-3 mt-1">
+          {insights.map((insight, index) => {
+            const type = ['success', 'warning', 'info'].includes(insight.type) ? insight.type : 'info'
+
+            return (
+              <Col md={6} xl={4} key={`${insight.code}-${index}`}>
+                <Card className={`dashboard-insight-card dashboard-insight-card--${type} h-100 border-0 shadow-sm`}>
+                  <Card.Body>
+                    <Badge className="dashboard-insight-badge">{insightTypeLabels[type]}</Badge>
+                    <h3 className="dashboard-insight-title">{insight.title}</h3>
+                    <p className="dashboard-insight-message mb-0">{insight.message}</p>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )
+          })}
+        </Row>
+      ) : <EmptyChart>No hay insights disponibles para el período analizado.</EmptyChart>}
+    </section>
+  )
+}
 
 const TopProductsChart = ({ products }) => {
   if (!products.length) {
@@ -135,12 +177,16 @@ const Dashboard = () => {
   const [topProducts, setTopProducts] = useState([])
   const [lowStock, setLowStock] = useState({ threshold: 0, products: [] })
   const [sales, setSales] = useState([])
+  const [insightsData, setInsightsData] = useState({ period: '', insights: [] })
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [isLoadingOverview, setIsLoadingOverview] = useState(true)
   const [isLoadingSales, setIsLoadingSales] = useState(true)
+  const [isLoadingInsights, setIsLoadingInsights] = useState(true)
   const [overviewError, setOverviewError] = useState('')
   const [salesError, setSalesError] = useState('')
+  const [insightsError, setInsightsError] = useState('')
+  const [canViewInsights, setCanViewInsights] = useState(true)
   const hasInvalidDateRange = Boolean(from && to && from > to)
 
   const handleAccessError = useCallback((requestError) => {
@@ -188,6 +234,39 @@ const Dashboard = () => {
     }
 
     loadOverview()
+
+    return () => {
+      isMounted = false
+    }
+  }, [handleAccessError, token])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadInsights = async () => {
+      setIsLoadingInsights(true)
+      setInsightsError('')
+
+      try {
+        const insightsResponse = await getDashboardInsights(token)
+        if (isMounted) setInsightsData(insightsResponse || { period: '', insights: [] })
+      } catch (requestError) {
+        if (!isMounted) return
+
+        if (requestError.code === 'FORBIDDEN') {
+          setCanViewInsights(false)
+          return
+        }
+
+        if (handleAccessError(requestError)) return
+        setInsightsError(requestError.message)
+        errorToast(requestError.message)
+      } finally {
+        if (isMounted) setIsLoadingInsights(false)
+      }
+    }
+
+    loadInsights()
 
     return () => {
       isMounted = false
@@ -247,6 +326,18 @@ const Dashboard = () => {
           </Row>
         )}
       </section>
+
+      {canViewInsights && (
+        isLoadingInsights ? (
+          <section className="dashboard-insights-section" aria-label="Cargando insights del negocio">
+            <div className="dashboard-loader"><Spinner animation="border" role="status" /> <span>Cargando insights del negocio...</span></div>
+          </section>
+        ) : insightsError ? (
+          <section className="dashboard-insights-section" aria-label="Error al cargar insights">
+            <Alert variant="danger" className="mb-0">{insightsError}</Alert>
+          </section>
+        ) : <BusinessInsights data={insightsData} />
+      )}
 
       <Row className="g-4 dashboard-content-row">
         <Col lg={6}>

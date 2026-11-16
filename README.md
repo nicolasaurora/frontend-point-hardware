@@ -12,6 +12,18 @@ Aplicación web de e-commerce para la gestión y compra de componentes de hardwa
 - Gestión de órdenes para admin.
 - Gestión de user y roles para superadmin.
 
+## Dashboard administrativo
+
+Los usuarios con rol `admin` o `superadmin` pueden acceder a `/admin/dashboard`.
+
+El dashboard consume endpoints protegidos mediante JWT y muestra:
+
+- Facturación total, cantidad de órdenes, ticket promedio y unidades vendidas.
+- Productos más vendidos mediante un gráfico de barras.
+- Evolución de ventas con filtro de rango de fechas.
+- Productos con bajo stock.
+- Insights automáticos generados a partir de métricas reales del negocio.
+
 ## Tecnologías
 
 - React + Vite

@@ -28,6 +28,9 @@ export const getTopProducts = (token) =>
 export const getLowStockProducts = (token) =>
   dashboardRequest('/dashboard/low-stock', token, 'No se pudo cargar el estado de stock.')
 
+export const getDashboardInsights = (token) =>
+  dashboardRequest('/dashboard/insights', token, 'No se pudieron cargar los insights del negocio.')
+
 export const getSalesOverTime = (token, from, to) => {
   const params = new URLSearchParams()
 
