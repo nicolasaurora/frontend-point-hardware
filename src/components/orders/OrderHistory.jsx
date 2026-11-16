@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Container, Spinner, Table } from 'react-bootstrap'
+import { Button, Container, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { getMyOrders } from './order.services'
 

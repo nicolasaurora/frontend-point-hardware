@@ -17,6 +17,7 @@ import OrderTicket from './components/orders/OrderTicket'
 import OrderHistory from './components/orders/OrderHistory'
 import AdminOrders from './components/orders/AdminOrders'
 import AboutUs from './components/AboutUs'
+import Dashboard from './components/dashboard/Dashboard'
 
 function App() {
   
@@ -38,6 +39,7 @@ function App() {
               <Route path='/orders/my-orders' element={<OrderHistory/>}></Route>
               <Route path='/orders/:id' element={<OrderTicket/>}></Route>
               <Route element={<Protected allowedRoles={['admin', 'superadmin']} />}>
+                <Route path='/admin/dashboard' element={<Dashboard/>}></Route>
                 <Route path='/admin/products' element={<AdminProducts/>}></Route>
                 <Route path='admin/products/new-product' element={<ProductForm/>}></Route>
                 <Route path='/admin/orders' element={<AdminOrders/>}></Route>

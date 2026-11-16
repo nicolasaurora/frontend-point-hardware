@@ -43,6 +43,10 @@ const CustomNavbar = () => {
     navigate('/admin/orders')
   }
 
+  const handleNavDashboard = () => {
+    navigate('/admin/dashboard')
+  }
+
   const handleNavAdminProducts = () => {
     navigate('admin/products')
   }
@@ -77,6 +81,9 @@ const CustomNavbar = () => {
             }
             {
               role === 'user' && <Nav.Link onClick={handleNavMyOrders}>Mis compras</Nav.Link>
+            }
+            {
+              role !== 'user' && <Nav.Link onClick={handleNavDashboard}>Dashboard</Nav.Link>
             }
             {
               role !== 'user' && <Nav.Link onClick={handleNavAdminProducts}>Gestionar Productos</Nav.Link>

@@ -293,6 +293,195 @@ h1, h2 {
   margin: 0;
 }
 
+.dashboard-container {
+  margin-bottom: 4rem;
+  max-width: 1320px;
+}
+
+.dashboard-header {
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-header h1 {
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p:not(.dashboard-eyebrow) {
+  color: #3d3d5c;
+}
+
+.dashboard-eyebrow {
+  color: #4e73df;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.dashboard-section-title,
+.dashboard-panel-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+.dashboard-section-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-summary-card {
+  border-left: 4px solid #10103d !important;
+}
+
+.dashboard-summary-label {
+  color: #5a5a78;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.dashboard-summary-value {
+  color: #10103d;
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+}
+
+.dashboard-content-row {
+  margin-top: 1.5rem;
+}
+
+.dashboard-sales-section {
+  margin-top: 1.5rem;
+}
+
+.dashboard-panel-title {
+  color: #10103d;
+  font-size: 1.15rem;
+}
+
+.dashboard-panel-heading,
+.dashboard-sales-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.dashboard-loader,
+.dashboard-empty-state {
+  align-items: center;
+  color: #5a5a78;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  min-height: 180px;
+  text-align: center;
+}
+
+.dashboard-bars {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.dashboard-bar-heading {
+  display: flex;
+  font-size: 0.9rem;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.dashboard-product-name {
+  font-weight: 700;
+}
+
+.dashboard-bar-track {
+  background-color: #edf0f8;
+  border-radius: 999px;
+  height: 0.7rem;
+  overflow: hidden;
+}
+
+.dashboard-bar-fill {
+  background: linear-gradient(90deg, #10103d, #4e73df);
+  border-radius: inherit;
+  height: 100%;
+  min-width: 0.2rem;
+}
+
+.dashboard-bar-row small {
+  color: #5a5a78;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.dashboard-stock-image {
+  height: 36px;
+  object-fit: contain;
+  width: 36px;
+}
+
+.dashboard-stock-table td,
+.dashboard-stock-table th {
+  vertical-align: middle;
+}
+
+.dashboard-date-filters {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.dashboard-date-filters .form-label {
+  color: #5a5a78;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.dashboard-line-chart {
+  margin-top: 1.5rem;
+}
+
+.dashboard-line-chart svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+
+.dashboard-chart-axis {
+  stroke: #ccd2e3;
+  stroke-width: 1;
+}
+
+.dashboard-chart-line {
+  fill: none;
+  stroke: #4e73df;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.dashboard-chart-point {
+  fill: #10103d;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.dashboard-chart-label {
+  fill: #5a5a78;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+}
+
+.dashboard-chart-caption {
+  color: #5a5a78;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 @media (max-width: 767px) {
   .site-navbar > .site-navbar-container {
     display: flex;
@@ -338,6 +527,18 @@ h1, h2 {
 
   .about-image {
     height: 240px;
+  }
+
+  .dashboard-sales-heading {
+    flex-direction: column;
+  }
+
+  .dashboard-date-filters {
+    width: 100%;
+  }
+
+  .dashboard-date-filters .form-control {
+    width: 100%;
   }
 
 }
